@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie</title>
+    <style>
+        #recommended{
+            width:10%;
+            height:10%;
+        }
+        #Movie{
+            background: skyblue;
+            color:white;
+        }
+        #Button{
+            background: springgreen;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <input type="text"placeholder="Enter a movie" id="Movie">
+    <p><button onclick="movie_details()" id="Button">Submit</button></p>
+    <script>
+        async function movie_details(){
+                var movie = document.getElementById("Movie").value; 
+                var response = await fetch(`http://www.omdbapi.com/?t=${movie}&apikey=e6d64a46`);
+                var result = await response.json();
+                if(result.Response == "True")
+                {
+                    var new_div = document.createElement("div");
+                    var image = document.createElement("img");
+                    image.src = result.Poster;
+                    new_div.append(image);
+                    var title = document.createElement("div");
+                    title.append("Title: " , result.Title);
+                    new_div.append(title);
+                    var release = document.createElement("div");
+                    release.append("Release Date: " , result.Released);
+                    new_div.append(release);
+                    var director = document.createElement("div");
+                    director.append("Director: " , result.Director);
+                    new_div.append(director);
+                    var writer = document.createElement("div");
+                    writer.append("Writer: " , result.Writer);
+                    new_div.append(writer);
+                    var actors = document.createElement("div");
+                    actors.append("Actors: " , result.Actors);
+                    new_div.append(actors);
+                    var imdb = document.createElement("div");
+                    imdb.append(result.imdbRating);
+                    new_div.append("imdb ratings: " , imdb);
+                    if(result.imdbRating > 8.5)
+                    {
+                        var rec_image = document.createElement("img");
+                        rec_image.src = "https://tse2.mm.bing.net/th?id=OIP.SAz9ckfuoZzPQ4jhTBAjGgHaH5&pid=Api&P=0&w=300&h=300";
+                        rec_image.id="recommended";
+                        new_div.append(rec_image);
+                    }
+                    document.body.append(new_div);
+            }
+            else{
+                var new_div = document.createElement("div");
+                var image = document.createElement("img");
+                image.src = "https://tse3.mm.bing.net/th?id=OIP.o0i9R6hPmMBL0kWRgQ_gOAHaHN&pid=Api&P=0&w=185&h=181";
+                new_div.append(image);
+                var warning = document.createElement("div");
+                warning.textContent = "Movie Not Found";
+                new_div.append(warning);
+                document.body.append(new_div);
+            }
+    }
+    </script>
+</body>
+</html>
